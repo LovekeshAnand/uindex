@@ -1,26 +1,76 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-urbanic);
+  --font-sans: var(--font-instrument);
+  --font-mono: var(--font-jetbrains);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme {
+  --color-ink: #0d0f2b;
+  --color-ink-2: #32397a;
+  --color-haze: #eef0fb;
+  --color-lilac: #bac3e0;
+  --color-violet: #8b5cf6;
+  --color-blue: #3b5bff;
+  --color-cyan: #38e1f0;
+  --color-lime: #d8f55c;
+
+  --animate-shimmer: shimmer 8s linear infinite;
+  --animate-sheen: sheen 7s ease-in-out infinite;
+  --animate-hover: hover 6s ease-in-out infinite;
+  --animate-slide: slide 50s linear infinite;
+  --animate-drift: drift 14s ease-in-out infinite alternate;
+  --animate-ping-soft: ping-soft 2s infinite;
+
+  @keyframes shimmer { to { background-position: 200% 0; } }
+  @keyframes sheen { 0%, 55% { background-position: 120% 0; } 100% { background-position: -120% 0; } }
+  @keyframes hover { 50% { transform: translate(-1.5vw, -2vw) rotate(-3deg); } }
+  @keyframes slide { to { transform: translateX(-50%); } }
+  @keyframes drift { to { transform: translate(-6%, 8%) scale(1.15) rotate(20deg); } }
+  @keyframes ping-soft {
+    0% { box-shadow: 0 0 0 0 var(--color-cyan); }
+    70%, 100% { box-shadow: 0 0 0 8px transparent; }
   }
 }
 
+/* holographic gradient pulled from the bee's wings/stripes */
+@utility bg-holo {
+  background-image: linear-gradient(100deg, #8b5cf6, #3b5bff 30%, #38e1f0 55%, #d8f55c 70%, #c084fc 90%);
+  background-size: 200% 100%;
+}
+
+/* same family minus the purple, for glows */
+@utility bg-aura {
+  background-image:
+    radial-gradient(closest-side at 35% 40%, #3b5bff, transparent),
+    radial-gradient(closest-side at 65% 55%, #38e1f0, transparent),
+    radial-gradient(closest-side at 50% 80%, #d8f55c, transparent);
+}
+
+/* faint honeycomb line pattern */
+@utility bg-hexgrid {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 66L0 50V16L28 0l28 16v34L28 66zm0 0v34' fill='none' stroke='%230d0f2b' stroke-opacity='.07'/%3E%3C/svg%3E");
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #f4f4f7;
+  color: var(--color-ink);
+}
+
+/* film grain over everything — kills the flat "generated" look */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: .09;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+:focus-visible { outline: 2px solid var(--color-blue); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before { animation: none !important; transition: none !important; }
 }

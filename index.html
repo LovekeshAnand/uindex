@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Uindex — every UI library, indexed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+@font-face { font-family: Urbanic; src: url("assets/Urbanic.otf") format("opentype"); font-display: swap; }
+
+:root {
+  --ink: #0d0f2b;
+  --ink-2: #32397a;
+  --haze: #eef0fb;
+  --lilac: #bac3e0;
+  --violet: #8b5cf6;
+  --blue: #3b5bff;
+  --cyan: #38e1f0;
+  --lime: #d8f55c;
+  --holo: linear-gradient(100deg, #8b5cf6, #3b5bff 30%, #38e1f0 55%, #d8f55c 70%, #c084fc 90%);
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+}
+* { box-sizing: border-box; margin: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--mono); color: var(--ink); font-size: 14px;
+  background: radial-gradient(60vw 50vw at 75% 20%, #dcdcff 0%, transparent 60%),
+              radial-gradient(50vw 40vw at 10% 90%, #e3f7fb 0%, transparent 60%), #f7f7fd;
+  overflow-x: hidden;
+}
+.display { font-family: Urbanic, Impact, sans-serif; text-transform: uppercase; line-height: .82; letter-spacing: .01em; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+
+/* ---------- nav ---------- */
+nav {
+  position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 24px;
+  padding: 14px clamp(16px, 4vw, 48px);
+  backdrop-filter: blur(14px); background: rgb(247 247 253 / .7);
+}
+nav .logo { font-size: 28px; text-decoration: none; }
+nav .links { display: flex; gap: 20px; margin-left: auto; font-size: 12px; text-transform: uppercase; }
+nav .links a { text-decoration: none; opacity: .65; }
+nav .links a:hover { opacity: 1; }
+.pulse { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; opacity: .7; }
+.pulse::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 0 0 var(--cyan); animation: ping 2s infinite; }
+@keyframes ping { 70% { box-shadow: 0 0 0 8px transparent; } }
+
+/* ---------- hero ---------- */
+.hero { position: relative; padding: 4vw clamp(16px, 4vw, 48px) 0; min-height: calc(100vh - 60px); display: grid; align-content: center; }
+.hero h1 { font-size: clamp(88px, 19vw, 300px); position: relative; z-index: 1; }
+.hero h1 .holo { background: var(--holo); -webkit-background-clip: text; background-clip: text; color: transparent; background-size: 200% 100%; animation: shimmer 8s linear infinite; }
+.hero h1 .r { display: block; text-align: right; }
+@keyframes shimmer { to { background-position: 200% 0; } }
+.bee {
+  position: absolute; z-index: 2; pointer-events: none;
+  width: clamp(320px, 58vw, 900px); right: 8vw; top: 50%; translate: 0 -55%;
+  mix-blend-mode: multiply; animation: hover 6s ease-in-out infinite;
+}
+@keyframes hover { 50% { transform: translate(-1.5vw, -2vw) rotate(-3deg); } }
+
+.search {
+  position: relative; z-index: 3; margin-top: 4vw; max-width: 720px;
+  display: flex; align-items: center; gap: 12px; padding: 6px 6px 6px 22px;
+  border-radius: 999px; background: #fff;
+  border: 2px solid transparent;
+  background: linear-gradient(#fff, #fff) padding-box, var(--holo) border-box;
+  box-shadow: 0 20px 60px -20px rgb(59 91 255 / .45);
+}
+.search input { flex: 1; border: 0; outline: 0; font: inherit; font-size: 16px; background: none; min-width: 0; padding: 14px 0; color: var(--ink); }
+.search kbd { font: inherit; font-size: 11px; padding: 4px 8px; border: 1px solid var(--lilac); border-radius: 6px; opacity: .7; }
+.search button { font-family: Urbanic, sans-serif; font-size: 24px; border: 0; cursor: pointer; padding: 12px 28px; border-radius: 999px; background: var(--ink); color: #fff; }
+.search button:hover { background: var(--ink-2); }
+
+.chips { position: relative; z-index: 3; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; max-width: 760px; }
+.chip {
+  font: inherit; font-size: 12px; cursor: pointer; padding: 8px 14px; border-radius: 999px;
+  border: 1px solid var(--lilac); background: rgb(255 255 255 / .6); color: var(--ink);
+}
+.chip:hover { border-color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+/* ---------- ticker ---------- */
+.ticker { margin-top: 6vw; border-block: 1px solid var(--ink); overflow: hidden; background: var(--ink); color: #fff; }
+.ticker div { display: flex; width: max-content; animation: slide 40s linear infinite; }
+.ticker span { font-family: Urbanic, sans-serif; font-size: 34px; padding: 10px 22px; white-space: nowrap; }
+.ticker span:nth-child(3n) { color: var(--cyan); }
+.ticker span:nth-child(5n) { color: var(--lime); }
+@keyframes slide { to { transform: translateX(-50%); } }
+
+/* ---------- sections ---------- */
+section { padding: 9vw clamp(16px, 4vw, 48px) 0; }
+.head { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 40px; flex-wrap: wrap; }
+.head h2 { font-size: clamp(56px, 9vw, 140px); }
+.head p { opacity: .6; font-size: 12px; text-transform: uppercase; }
+
+/* honeycomb */
+.hive { display: flex; flex-wrap: wrap; justify-content: center; padding-bottom: 40px; }
+.hex {
+  --s: clamp(130px, 15vw, 190px);
+  width: var(--s); height: calc(var(--s) * 1.1547); margin: 4px 4px calc(var(--s) * -0.2887 + 4px);
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  border: 0; cursor: pointer; color: var(--ink); background: #fff; font: inherit;
+  display: grid; place-content: center; text-align: center; gap: 6px;
+  transition: background .3s, color .3s, transform .3s;
+}
+.hex:nth-child(9n+5) { margin-left: calc(var(--s) * .5 + 8px); }
+.hex b { font-family: Urbanic, sans-serif; font-weight: 400; font-size: clamp(26px, 2.6vw, 38px); text-transform: uppercase; }
+.hex small { font-size: 11px; opacity: .6; }
+.hex:hover, .hex[aria-pressed="true"] { background: var(--holo); color: var(--ink); transform: scale(1.04); }
+.hex:nth-child(odd) { background: var(--haze); }
+.hex:nth-child(odd):hover, .hex:nth-child(odd)[aria-pressed="true"] { background: var(--holo); }
+
+/* index list */
+.bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; font-size: 12px; }
+.bar .count { font-family: Urbanic, sans-serif; font-size: 40px; }
+.bar .clear { margin-left: auto; }
+.rows { list-style: none; padding: 0; border-top: 2px solid var(--ink); }
+.rows li a {
+  display: grid; grid-template-columns: 48px 1.4fr 1.6fr 1fr 32px; align-items: center; gap: 16px;
+  padding: 18px 8px; border-bottom: 1px solid var(--lilac); text-decoration: none; position: relative;
+  transition: padding .25s, background .25s;
+}
+.rows li a:hover { padding-left: 24px; background: linear-gradient(90deg, rgb(139 92 246 / .12), rgb(56 225 240 / .1), transparent); }
+.rows .n { opacity: .45; font-size: 12px; }
+.rows .name { font-family: Urbanic, sans-serif; font-size: clamp(30px, 3.6vw, 52px); text-transform: uppercase; line-height: 1; }
+.rows .fw { display: flex; flex-wrap: wrap; gap: 6px; }
+.rows .fw span { font-size: 11px; padding: 3px 8px; border: 1px solid var(--lilac); border-radius: 999px; }
+.rows .kind { font-size: 12px; text-transform: uppercase; opacity: .7; }
+.rows .go { font-size: 20px; transition: transform .25s; }
+.rows li a:hover .go { transform: translate(4px, -4px); }
+.empty { padding: 60px 0; text-align: center; }
+.empty .display { font-size: 80px; }
+
+/* footer */
+footer { margin-top: 10vw; padding: 0 clamp(16px, 4vw, 48px) 32px; position: relative; overflow: hidden; }
+.cta {
+  display: flex; flex-wrap: wrap; gap: 24px; align-items: center; justify-content: space-between;
+  border-radius: 28px; padding: clamp(24px, 4vw, 56px); color: #fff;
+  background: radial-gradient(circle at 85% 30%, #3b5bff 0, transparent 50%), radial-gradient(circle at 20% 120%, #8b5cf6 0, transparent 50%), var(--ink);
+}
+.cta h3 { font-size: clamp(48px, 7vw, 110px); }
+.cta a { font-family: Urbanic, sans-serif; font-size: 26px; text-decoration: none; padding: 16px 32px; border-radius: 999px; background: var(--lime); color: var(--ink); }
+.cta a:hover { background: var(--cyan); }
+.bzz { font-size: 34vw; text-align: center; margin-top: 3vw; color: transparent; -webkit-text-stroke: 1px var(--lilac); user-select: none; }
+.fine { display: flex; justify-content: space-between; font-size: 11px; opacity: .5; }
+
+@media (max-width: 760px) {
+  nav .links { display: none; }
+  nav .pulse { margin-left: auto; }
+  .bee { width: 110vw; right: -30vw; top: 30%; opacity: .9; }
+  .search kbd { display: none; }
+  .search button { padding: 10px 18px; font-size: 20px; }
+  .hex:nth-child(9n+5) { margin-left: 4px; }
+  .rows li a { grid-template-columns: 28px 1fr 24px; }
+  .rows .fw, .rows .kind { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo display">Uindex</a>
+  <span class="pulse"><span id="total">0</span>&nbsp;libraries indexed</span>
+  <div class="links"><a href="#hive">Browse</a><a href="#index">Index</a><a href="#submit">Submit</a></div>
+</nav>
+
+<header class="hero">
+  <h1 class="display">Every <span class="holo">UI</span><span class="r">Indexed.</span></h1>
+  <img class="bee" src="assets/bee without background.png" alt="">
+
+  <form class="search" role="search" onsubmit="event.preventDefault(); location.hash='index';">
+    <input id="q" type="search" aria-label="Search UI libraries" placeholder="date picker, headless, svelte…" autocomplete="off">
+    <kbd>/</kbd>
+    <button type="submit">Search</button>
+  </form>
+  <div class="chips" id="fw" aria-label="Filter by framework"></div>
+</header>
+
+<div class="ticker" aria-hidden="true"><div id="ticker"></div></div>
+
+<section id="hive">
+  <div class="head"><h2 class="display">The Hive</h2><p>Pick a kind ↓</p></div>
+  <div class="hive" id="kinds"></div>
+</section>
+
+<section id="index">
+  <div class="bar">
+    <span class="count" id="count">0</span><span>matches</span>
+    <button class="chip clear" id="clear">Reset ✕</button>
+  </div>
+  <ul class="rows" id="rows"></ul>
+</section>
+
+<footer id="submit">
+  <div class="cta">
+    <h3 class="display">Missing<br>a library?</h3>
+    <a href="mailto:hello@uindex.dev?subject=Add%20a%20library">Feed the hive →</a>
+  </div>
+  <div class="bzz display" aria-hidden="true">Bzz.</div>
+  <div class="fine"><span>© Uindex</span><span>Indexing the whole UI internet</span></div>
+</footer>
+
+<script>
+// ponytail: static seed list, swap for a fetch() to the real index API when it exists
+const LIBS = [
+  ["shadcn/ui", "https://ui.shadcn.com", ["React"], "Copy-paste"],
+  ["Radix UI", "https://www.radix-ui.com", ["React"], "Headless"],
+  ["Headless UI", "https://headlessui.com", ["React", "Vue"], "Headless"],
+  ["Ark UI", "https://ark-ui.com", ["React", "Vue", "Svelte", "Solid"], "Headless"],
+  ["React Aria", "https://react-spectrum.adobe.com/react-aria/", ["React"], "Headless"],
+  ["Melt UI", "https://melt-ui.com", ["Svelte"], "Headless"],
+  ["Bits UI", "https://bits-ui.com", ["Svelte"], "Headless"],
+  ["MUI", "https://mui.com", ["React"], "Styled kit"],
+  ["Chakra UI", "https://chakra-ui.com", ["React"], "Styled kit"],
+  ["Mantine", "https://mantine.dev", ["React"], "Styled kit"],
+  ["Ant Design", "https://ant.design", ["React"], "Styled kit"],
+  ["HeroUI", "https://heroui.com", ["React"], "Styled kit"],
+  ["PrimeVue", "https://primevue.org", ["Vue"], "Styled kit"],
+  ["Vuetify", "https://vuetifyjs.com", ["Vue"], "Styled kit"],
+  ["Quasar", "https://quasar.dev", ["Vue"], "Styled kit"],
+  ["Angular Material", "https://material.angular.io", ["Angular"], "Styled kit"],
+  ["PrimeNG", "https://primeng.org", ["Angular"], "Styled kit"],
+  ["Skeleton", "https://www.skeleton.dev", ["Svelte"], "Styled kit"],
+  ["Shoelace", "https://shoelace.style", ["Web Components"], "Styled kit"],
+  ["Bootstrap", "https://getbootstrap.com", ["HTML/CSS"], "CSS framework"],
+  ["Bulma", "https://bulma.io", ["HTML/CSS"], "CSS framework"],
+  ["daisyUI", "https://daisyui.com", ["HTML/CSS"], "CSS framework"],
+  ["Flowbite", "https://flowbite.com", ["HTML/CSS", "React", "Vue"], "CSS framework"],
+  ["Pico CSS", "https://picocss.com", ["HTML/CSS"], "CSS framework"],
+  ["Aceternity UI", "https://ui.aceternity.com", ["React"], "Motion"],
+  ["Magic UI", "https://magicui.design", ["React"], "Motion"],
+  ["Motion", "https://motion.dev", ["React", "Vue", "HTML/CSS"], "Motion"],
+  ["React Native Paper", "https://reactnativepaper.com", ["React Native"], "Mobile"],
+  ["Tamagui", "https://tamagui.dev", ["React", "React Native"], "Mobile"],
+  ["gluestack-ui", "https://gluestack.io", ["React", "React Native"], "Mobile"],
+  ["Flutter Material", "https://docs.flutter.dev/ui/widgets/material", ["Flutter"], "Mobile"],
+  ["Recharts", "https://recharts.org", ["React"], "Charts"],
+  ["Apache ECharts", "https://echarts.apache.org", ["HTML/CSS", "React", "Vue"], "Charts"],
+  ["Tremor", "https://www.tremor.so", ["React"], "Charts"],
+  ["Lucide", "https://lucide.dev", ["React", "Vue", "Svelte", "Angular", "HTML/CSS"], "Icons"],
+  ["Phosphor", "https://phosphoricons.com", ["React", "Vue", "HTML/CSS"], "Icons"],
+].map(([name, url, fw, kind]) => ({ name, url, fw, kind }));
+
+const $ = s => document.querySelector(s);
+const state = { q: "", fw: null, kind: null };
+const uniq = a => [...new Set(a)];
+const esc = s => s.replace(/[&<>"]/g, c => `&#${c.charCodeAt(0)};`);
+
+$("#total").textContent = LIBS.length;
+$("#ticker").innerHTML = [...LIBS, ...LIBS].map(l => `<span>${esc(l.name)} ✦</span>`).join("");
+
+const toggle = (key, val) => { state[key] = state[key] === val ? null : val; render(); };
+
+$("#fw").innerHTML = uniq(LIBS.flatMap(l => l.fw)).map(f => `<button class="chip" data-fw="${f}">${f}</button>`).join("");
+$("#fw").onclick = e => e.target.dataset.fw && toggle("fw", e.target.dataset.fw);
+
+$("#kinds").innerHTML = uniq(LIBS.map(l => l.kind)).map(k =>
+  `<button class="hex" data-kind="${k}"><b>${k}</b><small>${LIBS.filter(l => l.kind === k).length} libs</small></button>`).join("");
+$("#kinds").onclick = e => {
+  const h = e.target.closest(".hex"); if (!h) return;
+  toggle("kind", h.dataset.kind); $("#index").scrollIntoView();
+};
+
+$("#q").oninput = e => { state.q = e.target.value.trim().toLowerCase(); render(); };
+$("#clear").onclick = () => { Object.assign(state, { q: "", fw: null, kind: null }); $("#q").value = ""; render(); };
+addEventListener("keydown", e => {
+  if (e.key === "/" && document.activeElement !== $("#q")) { e.preventDefault(); $("#q").focus(); }
+});
+
+function render() {
+  const hits = LIBS.filter(l =>
+    (!state.fw || l.fw.includes(state.fw)) &&
+    (!state.kind || l.kind === state.kind) &&
+    (!state.q || `${l.name} ${l.kind} ${l.fw.join(" ")}`.toLowerCase().includes(state.q)));
+  $("#count").textContent = hits.length;
+  $("#rows").innerHTML = hits.length ? hits.map((l, i) => `
+    <li><a href="${l.url}" target="_blank" rel="noopener">
+      <span class="n">${String(i + 1).padStart(3, "0")}</span>
+      <span class="name">${esc(l.name)}</span>
+      <span class="fw">${l.fw.map(f => `<span>${f}</span>`).join("")}</span>
+      <span class="kind">${l.kind}</span>
+      <span class="go">↗</span>
+    </a></li>`).join("")
+    : `<li class="empty"><div class="display">Nothing buzzing</div><p>Try another word.</p></li>`;
+  document.querySelectorAll("[data-fw]").forEach(b => b.setAttribute("aria-pressed", b.dataset.fw === state.fw));
+  document.querySelectorAll("[data-kind]").forEach(b => b.setAttribute("aria-pressed", b.dataset.kind === state.kind));
+}
+render();
+</script>
+</body>
+</html>
