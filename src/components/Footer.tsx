@@ -18,9 +18,9 @@ export default function Footer() {
       {/* call to action */}
       <div className="relative isolate flex flex-wrap items-center justify-between gap-6 overflow-hidden rounded-[28px] bg-ink p-[clamp(24px,4vw,56px)] text-white">
         <div className="bg-aura animate-drift absolute -right-[10%] -bottom-[60%] -z-10 aspect-square w-[min(90vw,700px)] opacity-30 blur-3xl" />
-        <h3 className="font-display text-[clamp(48px,7vw,110px)] leading-[.82] uppercase">
+        <h2 className="font-display text-[clamp(48px,7vw,110px)] leading-[.82] uppercase">
           Missing<br />a library?
-        </h3>
+        </h2>
         <a
           href={`mailto:${contact.email}?subject=Add%20a%20library%20to%20Uindex`}
           className="rounded-full bg-lime px-8 py-4 text-base font-semibold text-ink transition-colors hover:bg-white"

@@ -26,6 +26,14 @@ export default function Explorer() {
   const input = useRef<HTMLInputElement>(null);
   const index = useRef<HTMLElement>(null);
 
+  // deep links: /?q=… (also powers the sitelinks search box in JSON-LD)
+  useEffect(() => {
+    const initial = new URLSearchParams(location.search).get("q");
+    // read after hydration so server and client HTML match
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (initial) setQ(initial);
+  }, []);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "/" && document.activeElement !== input.current) {
@@ -87,6 +95,7 @@ export default function Explorer() {
           <span className="animate-sheen block w-fit bg-[linear-gradient(110deg,#0d0f2b_42%,#5b74ff_48%,#38e1f0_50%,#0d0f2b_56%)] bg-size-[250%_100%] bg-clip-text text-transparent">
             Indexed.
           </span>
+          <span className="sr-only"> — search UI component libraries for React, Vue, Svelte, Angular and more</span>
         </h1>
 
         <form
@@ -194,7 +203,7 @@ export default function Explorer() {
               >
                 <span className="font-mono text-xs opacity-45">{String(i + 1).padStart(3, "0")}</span>
                 <span>
-                  <span className="block text-[clamp(18px,1.6vw,22px)] font-semibold tracking-tight">{l.name}</span>
+                  <h3 className="text-[clamp(18px,1.6vw,22px)] font-semibold tracking-tight">{l.name}</h3>
                   <span className="mt-1 block text-[13px] opacity-60 md:hidden">{l.description}</span>
                 </span>
                 <span className="hidden text-sm leading-relaxed opacity-70 md:block">{l.description}</span>

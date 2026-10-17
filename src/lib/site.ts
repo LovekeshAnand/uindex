@@ -1,0 +1,32 @@
+// Single source of truth for SEO. Set NEXT_PUBLIC_SITE_URL to the real domain in production.
+export const site = {
+  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://uindex.vercel.app").replace(/\/$/, ""),
+  name: "Uindex",
+  title: "Uindex — Every UI Library, Indexed",
+  description:
+    "Search and compare every UI library on the internet. Uindex indexes React, Vue, Svelte, Angular, Flutter and React Native component libraries — headless, styled, copy-paste, animation, charts and icons — in one fast, searchable index.",
+  author: { name: "Lovekesh Anand", github: "https://github.com/LovekeshAnand" },
+  repo: "https://github.com/LovekeshAnand/uindex",
+  keywords: [
+    "UI library",
+    "UI libraries",
+    "component library",
+    "React component library",
+    "Vue component library",
+    "Svelte UI library",
+    "Angular UI library",
+    "headless UI",
+    "Tailwind components",
+    "shadcn/ui alternatives",
+    "best UI library",
+    "UI kit",
+    "design system",
+    "React Native UI library",
+    "Flutter UI",
+    "animated components",
+    "chart library",
+    "icon library",
+    "UI library index",
+    "UI library search engine",
+  ],
+};
